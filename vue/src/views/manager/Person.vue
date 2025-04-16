@@ -15,8 +15,8 @@
       <el-form-item prop="username" label="用户名">
         <el-input disabled v-model="data.user.username" placeholder="请输入用户名"></el-input>
       </el-form-item>
-      <el-form-item prop="name" label="姓名">
-        <el-input v-model="data.user.name" placeholder="请输入姓名"></el-input>
+      <el-form-item prop="name" label="名称">
+        <el-input v-model="data.user.name" placeholder="请输入名称"></el-input>
       </el-form-item>
       <el-form-item prop="phone" label="电话">
         <el-input v-model="data.user.phone" placeholder="请输入电话"></el-input>
@@ -48,17 +48,16 @@ const handleFileUpload = (res) => {
 
 const emit = defineEmits(['updateUser'])
 const update = () => {
-  if (data.user.role === 'ADMIN') {
-    request.put('/admin/update', data.user).then(res => {
-      if (res.code === '200') {
-        ElMessage.success('保存成功')
-        localStorage.setItem('xm-user', JSON.stringify(data.user))
-        emit('updateUser')
-      } else {
-        ElMessage.error(res.msg)
-      }
-    })
-  }
+  let url = (data.user.role === 'ADMIN' ? '/admin/update' : '/cinema/update')
+  request.put(url, data.user).then(res => {
+    if (res.code === '200') {
+      ElMessage.success('保存成功')
+      localStorage.setItem('xm-user', JSON.stringify(data.user))
+      emit('updateUser')
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
 }
 </script>
 

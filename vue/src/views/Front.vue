@@ -9,7 +9,6 @@
       <div class="front-header-center">
         <el-menu :default-active="router.currentRoute.value.path" router mode="horizontal">
           <el-menu-item index="/front/home">首页</el-menu-item>
-          <el-menu-item index="/front/person">个人中心</el-menu-item>
         </el-menu>
       </div>
       <div class="front-header-right">
@@ -24,6 +23,12 @@
               <span style="margin-left: 5px;">{{ data.user.name }}</span><el-icon><arrow-down /></el-icon>
             </div>
             <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item @click="router.push('/front/person')">个人资料</el-dropdown-item>
+              </el-dropdown-menu>
+              <el-dropdown-menu>
+                <el-dropdown-item @click="router.push('/front/password')">修改密码</el-dropdown-item>
+              </el-dropdown-menu>
               <el-dropdown-menu>
                 <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
               </el-dropdown-menu>

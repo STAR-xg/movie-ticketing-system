@@ -12,6 +12,12 @@
         <el-form-item prop="confirmPassword">
           <el-input show-password :prefix-icon="Lock" size="large" v-model="data.form.confirmPassword" placeholder="请确认密码"></el-input>
         </el-form-item>
+        <el-form-item prop="role">
+          <el-select size="large" v-model="data.form.role" paceholder="请选择角色">
+            <el-option value="CINEMA" label="电影院"></el-option>
+            <el-option value="USER" label="用户"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button size="large" type="primary" style="width: 100%" @click="login">注 册</el-button>
         </el-form-item>
@@ -49,6 +55,9 @@ const data = reactive({
     password: [
       { required: true, message: '请输入密码', trigger: 'blur' }
     ],
+    role: [
+      { required: true, message: '请选择角色', trigger: 'blur' }
+    ],
     confirmPassword: [
         { validator: validatePass, trigger: 'blur' }
     ]
@@ -63,7 +72,9 @@ const login = () => {
       request.post('/register', data.form).then(res => {
         if (res.code === '200') {
           ElMessage.success('注册成功')
-          router.push('/login')
+          setInterval(() => {
+            location.href = '/login'
+          }, 500)
         } else {
           ElMessage.error(res.msg)
         }
@@ -80,11 +91,13 @@ const login = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to top, #00467f, #a5cc82);
+  //background: linear-gradient(to top, #66a0d0, #a5cc82);
+  background-image: url("@/assets/imgs/loginbackground.png");
+  background-size: cover;
 }
 .login-box {
-  width: 350px;
-  padding: 30px;
+  width: 400px;
+  padding: 40px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: rgba(255, 255, 255, 0.5);

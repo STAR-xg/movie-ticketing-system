@@ -12,6 +12,7 @@ import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -100,5 +101,9 @@ public class CinemaService {
         dbCinema.setPassword(account.getNewPassword());
         cinemaMapper.updateById(dbCinema);
     }
-
+    public void register(Account account){
+        Cinema cinema = new Cinema();
+        BeanUtils.copyProperties(account,cinema);
+        add(cinema);
+    }
 }

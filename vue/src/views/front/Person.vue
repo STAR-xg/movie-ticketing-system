@@ -1,5 +1,6 @@
 <template>
-  <div style="width: 40%; margin: 5px auto" class="card">
+  <div style="width: 40%; margin: 20px auto" class="card">
+    <div style="font-size: 20px; padding: 20px 20px">个人资料</div>
     <el-form ref="user" :model="data.user" label-width="60px" style="padding: 20px">
       <div style="text-align: center; margin-bottom: 20px">
         <el-upload
@@ -48,17 +49,15 @@ const handleFileUpload = (res) => {
 
 const emit = defineEmits(['updateUser'])
 const update = () => {
-  if (data.user.role === 'ADMIN') {
-    request.put('/admin/update', data.user).then(res => {
-      if (res.code === '200') {
-        ElMessage.success('保存成功')
-        localStorage.setItem('xm-user', JSON.stringify(data.user))
-        emit('updateUser')
-      } else {
-        ElMessage.error(res.msg)
-      }
-    })
-  }
+  request.put('/user/update', data.user).then(res => {
+    if (res.code === '200') {
+      ElMessage.success('保存成功')
+      localStorage.setItem('xm-user', JSON.stringify(data.user))
+      emit('updateUser')
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
 }
 </script>
 
