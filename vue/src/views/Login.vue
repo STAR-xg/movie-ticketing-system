@@ -10,8 +10,10 @@
           <el-input show-password :prefix-icon="Lock" size="large" v-model="data.form.password" placeholder="请输入密码"></el-input>
         </el-form-item>
         <el-form-item prop="role">
-          <el-select size="large" v-model="data.form.role">
+          <el-select size="large" v-model="data.form.role" paceholder="请选择角色">
             <el-option value="ADMIN" label="管理员"></el-option>
+            <el-option value="CINEMA" label="电影院"></el-option>
+            <el-option value="USER" label="用户"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -35,13 +37,16 @@ import router from "@/router/index.js";
 
 const data = reactive({
   dialogVisible: true,
-  form: { role: 'ADMIN' },
+  form: {  },
   rules: {
     username: [
       { required: true, message: '请输入账号', trigger: 'blur' }
     ],
     password: [
       { required: true, message: '请输入密码', trigger: 'blur' }
+    ],
+    role:[
+      { required: true, message: '请选择角色', trigger: 'blur' }
     ]
   }
 })
@@ -56,7 +61,17 @@ const login = () => {
           ElMessage.success('登录成功')
           // 存储用户信息到浏览器的缓存
           localStorage.setItem('xm-user', JSON.stringify(res.data))
-          router.push('/manager/home')
+          setInterval(() => {
+            if (res.data.role === 'USER') {
+              location.href = '/front/home'
+            } else {
+              location.href = '/manager/home'
+            }
+          },500)
+
+
+
+          //router.push('/manager/home')
         } else {
           ElMessage.error(res.msg)
         }
@@ -73,13 +88,15 @@ const login = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to top, #7f7fd5, #86a8e7, #91eae4);
+   //background: linear-gradient(to top, #56569c, #86a8e7, #91eae4);
+  background-image: url("@/assets/imgs/loginbackground.png");
+  background-size: cover;
 }
 .login-box {
   width: 350px;
   padding: 30px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.4);
 }
 </style>

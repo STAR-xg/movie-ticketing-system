@@ -36,7 +36,7 @@ public class UserService {
         if (ObjectUtil.isEmpty(user.getName())) {
             user.setName(user.getUsername());
         }
-        user.setRole(RoleEnum.ADMIN.name());
+        user.setRole(RoleEnum.USER.name());
         userMapper.insert(user);
     }
 
