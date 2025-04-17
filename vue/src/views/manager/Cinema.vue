@@ -310,3 +310,10 @@ const reset = () => {
 
 load()
 </script>
+<style>
+.line1 {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+</style>
