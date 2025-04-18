@@ -17,6 +17,7 @@ const router = createRouter({
         { path: 'user', meta: { name: '用户信息' }, component: () => import('@/views/manager/User.vue'), },
         { path: 'type', meta: { name: '电影分类' }, component: () => import('@/views/manager/Type.vue'), },
         { path: 'area', meta: { name: '电影区域' }, component: () => import('@/views/manager/Area.vue'), },
+        { path: 'film', meta: { name: '电影信息' }, component: () => import('@/views/manager/Film.vue'), },
 
       ]
     },
