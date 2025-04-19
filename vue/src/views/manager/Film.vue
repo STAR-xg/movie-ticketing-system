@@ -15,93 +15,79 @@
         <el-table-column type="selection" width="55" />
         <el-table-column type="expand">
           <template #default="props">
-            <el-descriptions class="margin-top" title="影院信息" :column="5" border>
-              <el-descriptions-item label="账号">{{ props.row.username }}</el-descriptions-item>
-              <el-descriptions-item label="电影院名称">
-                <el-popover
-                    placement="top-start"
-                    title="影院名称"
-                    :width="200"
-                    trigger="hover"
-                    :content="props.row.name"
-                >
+            <el-descriptions class="margin-top" title="电影信息" :column="5" border>
+              <el-descriptions-item label="电影名称">{{ props.row.title }}</el-descriptions-item>
+              <el-descriptions-item label="英文名称">{{ props.row.english }}</el-descriptions-item>
+              <el-descriptions-item label="上映日期">{{ props.row.start }}</el-descriptions-item>
+              <el-descriptions-item label="电影时长">{{ props.row.time }}分钟</el-descriptions-item>
+              <el-descriptions-item label="电影类型">
+                <el-tag v-for="item in scope.row.types" type="info" style="margin-right: 5px;margin-bottom: 5px">{{item}}</el-tag>
+              </el-descriptions-item>
+              <el-descriptions-item label="电影语言">{{ props.row.language }}</el-descriptions-item>
+              <el-descriptions-item label="电影分辨率">{{ props.row.resolution }}</el-descriptions-item>
+              <el-descriptions-item label="电影简介">
+                <el-popover placement="top-start" title="电影简介" :width="400" trigger="hover" :content="props.row.content">
                   <template #reference>
-                    {{ props.row.name }}
+                    <div style="width: 100px" class="line1">{{ props.row.content }}</div>
                   </template>
                 </el-popover>
               </el-descriptions-item>
-              <el-descriptions-item label="头像">
-                <el-image style="width: 40px; height: 40px; display: block" v-if="props.row.avatar"
-                          :src="props.row.avatar" :preview-src-list="[props.row.avatar]" preview-teleported></el-image>
+              <el-descriptions-item label="电影封面">
+                <el-image style="width: 40px; height: 40px; display: block" v-if="props.row.img"
+                          :src="props.row.front" :preview-src-list="[props.row.img]" preview-teleported></el-image>
               </el-descriptions-item>
-              <el-descriptions-item label="手机号">
-                <template #label>
-                  <div class="cell-item">
-                    手机号
-                  </div>
-                </template>{{ props.row.phone }}
-              </el-descriptions-item>
-              <el-descriptions-item label="邮箱">{{ props.row.email }}</el-descriptions-item>
-              <el-descriptions-item label="影院地址">
-                <el-popover placement="top-start" title="影院地址" :width="200" trigger="hover" :content="props.row.address">
+              <el-descriptions-item label="制作公司">
+                <el-popover placement="top-start" title="制作公司" :width="200" trigger="hover" :content="props.row.employ">
                   <template #reference>
-                    <div style="width: 80px" class="line1">{{ props.row.address }}</div>
+                    <div style="width: 100px" class="line1">{{ props.row.employ }}</div>
                   </template>
                 </el-popover>
               </el-descriptions-item>
-              <el-descriptions-item label="负责人">{{ props.row.leader }}</el-descriptions-item>
-              <el-descriptions-item label="身份证号">
-                <el-popover placement="top-start" title="身份证号" :width="200" trigger="hover" :content="props.row.code">
-                  <template #reference>
-                    <div style="width: 50px" class="line1">{{ props.row.code }}</div>
-                  </template>
-                </el-popover>
+              <el-descriptions-item label="电影区域">{{ props.row.areaName }}</el-descriptions-item>
+              <el-descriptions-item label="电影状态">
+                <el-tag v-if="props.row.status === '待上映'" type="warning">{{ props.row.status }}</el-tag>
+                <el-tag v-if="props.row.status === '已上映'" type="success">{{ props.row.status }}</el-tag>
+                <el-tag v-if="props.row.status === '停止上映'" type="danger">{{ props.row.status }}</el-tag>}
               </el-descriptions-item>
-              <el-descriptions-item label="身份证正面">
-                <el-image style="width: 40px; height: 40px; display: block" v-if="props.row.front"
-                          :src="props.row.front" :preview-src-list="[props.row.front]" preview-teleported></el-image>
+              <el-descriptions-item label="电影评分">
+                <el-rate
+                  v-model="props.row.score"
+                  disabled
+                  show-score
+                  text-color="#ff9900"
+                  score-template="{value} 分"
+                  />
               </el-descriptions-item>
-              <el-descriptions-item label="身份证反面">
-                <el-image style="width: 40px; height: 40px; display: block" v-if="props.row.back"
-                          :src="props.row.back" :preview-src-list="[props.row.back]" preview-teleported></el-image>
-              </el-descriptions-item>
-              <el-descriptions-item label="营业执照">
-                <el-image style="width: 40px; height: 40px; display: block" v-if="props.row.certificate"
-                          :src="props.row.certificate" :preview-src-list="[props.row.certificate]" preview-teleported></el-image>
-              </el-descriptions-item>
-              <el-descriptions-item label="审核状态">
-                <el-tag v-if="props.row.status === '待审核'" type="warning">{{ props.row.status }}</el-tag>
-                <el-tag v-if="props.row.status === '审核通过'" type="success">{{ props.row.status }}</el-tag>
-                <el-tag v-if="props.row.status === '审核拒绝'" type="danger">{{ props.row.status }}</el-tag>
-              </el-descriptions-item>
-              <el-descriptions-item label="角色">{{ props.row.role }}</el-descriptions-item>
             </el-descriptions>
           </template>
         </el-table-column>
-        <el-table-column prop="title" label="电影名称" />
-        <el-table-column prop="english" label="英文名" show-overflow-tooltip/>
         <el-table-column prop="img" label="电影封面">
           <template v-slot="scope">
             <el-image style="width: 40px; height: 40px; border-radius: 5px; display: block" v-if="scope.row.img"
                       :src="scope.row.img" :preview-src-list="[scope.row.img]" preview-teleported></el-image>
           </template>
         </el-table-column>
+        <el-table-column prop="title" label="电影名称" />
+        <el-table-column prop="english" label="英文名" show-overflow-tooltip/>
         <el-table-column prop="start" label="上映日期" />
         <el-table-column prop="time" label="电影时长/分" />
-        <el-table-column prop="types" label="电影类型" />
-        <el-table-column prop="language" label="语言" />
-        <el-table-column prop="areaName" label="电影区域"/>
-        <el-table-column prop="content" label="电影简介" show-overflow-tooltip />
-        <el-table-column prop="status" label="电影状态">
-
+        <el-table-column prop="types" label="电影类型" width="180">
           <template v-slot="scope">
-            <el-tag v-if="scope.row.status === '待审核'" type="warning">{{ scope.row.status }}</el-tag>
-            <el-tag v-if="scope.row.status === '审核通过'" type="success">{{ scope.row.status }}</el-tag>
-            <el-tag v-if="scope.row.status === '审核拒绝'" type="danger">{{ scope.row.status }}</el-tag>
+            <el-tag v-for="item in scope.row.types" type="info" style="margin-right: 5px;margin-bottom: 5px">{{item}}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="role" label="角色" />
-        <el-table-column label="操作" width="200" fixed="right">
+        <el-table-column prop="language" label="语言" />
+        <el-table-column prop="content" label="电影简介" show-overflow-tooltip />
+        <el-table-column prop="areaName" label="电影区域"/>
+        <el-table-column prop="status" label="电影状态">
+          <template v-slot="scope">
+            <el-tag v-if="scope.row.status === '待上映'" type="warning">{{ scope.row.status }}</el-tag>
+            <el-tag v-if="scope.row.status === '已上映'" type="success">{{ scope.row.status }}</el-tag>
+            <el-tag v-if="scope.row.status === '停止上映'" type="danger">{{ scope.row.status }}</el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="操作" width="100" fixed="right">
           <template v-slot="scope">
             <el-button type="success" circle :icon="Select" @click="handleStatus(scope.row, '审核通过')"></el-button>
             <el-button type="info" circle :icon="CloseBold" @click="handleStatus(scope.row, '审核拒绝')"></el-button>
@@ -121,7 +107,7 @@
           <el-input v-model="data.form.title" placeholder="请输入电影名称"></el-input>
         </el-form-item>
         <el-form-item prop="english" label="英文名称">
-         <el-input v-model="data.form.title" placeholder="请输入英文名称"></el-input>
+         <el-input v-model="data.form.english" placeholder="请输入英文名称"></el-input>
         </el-form-item>
         <el-form-item prop="start" label="上映日期">
           <el-date-picker v-model="data.form.start" type="date" value-format="YYYY-MM-DD" style="width: 250px"></el-date-picker>
@@ -141,21 +127,20 @@
         </el-form-item>
         <el-form-item prop="language" label="电影语言">
           <el-select v-model="data.form.language"  placeholder="请选择电影语言" >
-            <el-option label="简体中文" value="简体中文" />
-            <el-option label="繁体中文" value="繁体中文" />
+            <el-option label="普通话" value="普通话" />
+            <el-option label="港语" value="港语" />
             <el-option label="英语" value="英语" />
-            <el-option label="日语" value="日语" />
             <el-option label="法语" value="法语" />
             <el-option label="俄语" value="俄语" />
+            <el-option label="日语" value="日语" />
             <el-option label="其他" value="其他" />
           </el-select>
         </el-form-item>
         <el-form-item prop="resolution" label="分辨率">
           <el-select v-model="data.form.resolution"  placeholder="请选择分辨率" >
-            <el-option label="2D" value="2D" />
-            <el-option label="3D" value="3D" />
-            <el-option label="IMAX 2D" value="IMAX 2D" />
-            <el-option label="IMAX 3D" value="IMAX 3D" />
+            <el-option label="普通" value="普通" />
+            <el-option label="2DIMAX" value="2DIMAX" />
+            <el-option label="3DIMAX" value="3DIMAX" />
           </el-select>
         </el-form-item>
         <el-form-item prop="content" label="电影简介">

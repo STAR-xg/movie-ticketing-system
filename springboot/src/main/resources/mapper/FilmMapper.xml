@@ -89,7 +89,10 @@
                 area_id = #{areaId},
             </if>
             <if test="status != null">
-                status = #{status},
+                status  = #{status},
+            </if>
+            <if test="score != null">
+                score  = #{score},
             </if>
         </set>
         where id = #{id}

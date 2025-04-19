@@ -16,8 +16,10 @@ public class Film {
     private String employ;
     private Integer areaId;
     private String status;
+    private Double score;
     private String areaName;
     private List<Integer> ids;
+    private List<String> types;
 
     public Integer getId() {
         return id;
@@ -137,5 +139,21 @@ public class Film {
 
     public void setAreaName(String areaName) {
         this.areaName = areaName;
+    }
+
+    public List<String> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<String> types) {
+        this.types = types;
+    }
+
+    public Double getScore() {
+        return score;
+    }
+
+    public void setScore(Double score) {
+        this.score = score;
     }
 }
