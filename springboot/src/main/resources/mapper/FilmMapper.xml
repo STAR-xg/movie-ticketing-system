@@ -7,7 +7,7 @@
         select film.*, area.title as areaName from `film`
         left join area on film.area_id = area.id
         <where>
-            <if test="title != null"> and title like concat('%', #{title}, '%')</if>
+            <if test="title != null"> and film.title like concat('%', #{title}, '%')</if>
             <if test="status != null"> and status = #{status}</if>
         </where>
         order by id desc
