@@ -13,7 +13,9 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 电影信息业务层方法
@@ -27,13 +29,22 @@ public class FilmService {
     private TypeMapper typeMapper;
 
     public void add(Film film) {
-
-        film.setTypeIds(JSONUtil.toJsonStr(film.getIds()));
+        List<String> typeIds = new ArrayList<>();
+        List<Integer> ids = film.getIds();
+        for (Integer typeId : ids) {
+            typeIds.add("&" + typeId + "&");
+        }
+        film.setTypeIds(JSONUtil.toJsonStr(typeIds));
         filmMapper.insert(film);
     }
 
     public void updateById(Film film) {
-        film.setTypeIds(JSONUtil.toJsonStr(film.getIds()));
+        List<String> typeIds = new ArrayList<>();
+        List<Integer> ids = film.getIds();
+        for (Integer typeId : ids) {
+            typeIds.add("&" + typeId + "&");
+        }
+        film.setTypeIds(JSONUtil.toJsonStr(typeIds));
         filmMapper.updateById(film);
     }
 
@@ -48,7 +59,17 @@ public class FilmService {
     }
 
     public Film selectById(Integer id) {
-        return filmMapper.selectById(id);
+        Film film = filmMapper.selectById(id);
+        List<Integer> ids = JSONUtil.toList(film.getTypeIds().replaceAll("&", ""), Integer.class);
+        List<String> tmpList = new ArrayList<>();
+        for (Integer typeId : ids) {
+            Type type = typeMapper.selectById(typeId);
+            if (ObjectUtil.isNotEmpty(type)) {
+                tmpList.add(type.getTitle());
+            }
+        }
+        film.setTypes(tmpList);
+        return film;
     }
 
     public List<Film> selectAll(Film film) {
@@ -57,18 +78,21 @@ public class FilmService {
 
     public PageInfo<Film> selectPage(Film film, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
+        if (ObjectUtil.isNotEmpty(film.getTypeId())) {
+            film.setTypeId("&" + film.getTypeId() + "&");
+        }
         List<Film> list = filmMapper.selectAll(film);
-        for (Film dbfilm : list) {
-            List<Integer> ids=JSONUtil.toList(dbfilm.getTypeIds(), Integer.class);
-            dbfilm.setIds(ids);
-            List<String> tmplist=new ArrayList<>();
-            for(Integer typeId:ids){
-                Type type=typeMapper.selectById(typeId);
-                if(ObjectUtil.isNotEmpty(type)){
-                    tmplist.add(type.getTitle());
+        for (Film dbFilm : list) {
+            List<Integer> ids = JSONUtil.toList(dbFilm.getTypeIds().replaceAll("&", ""), Integer.class);
+            dbFilm.setIds(ids);
+            List<String> tmpList = new ArrayList<>();
+            for (Integer typeId : ids) {
+                Type type = typeMapper.selectById(typeId);
+                if (ObjectUtil.isNotEmpty(type)) {
+                    tmpList.add(type.getTitle());
                 }
             }
-            dbfilm.setTypes(tmplist);
+            dbFilm.setTypes(tmpList);
         }
         return PageInfo.of(list);
     }

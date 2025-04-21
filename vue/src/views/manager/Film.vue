@@ -1,27 +1,32 @@
 <template>
   <div>
     <div class="card" style="margin-bottom: 5px">
-      <el-input v-model="data.name" prefix-icon="Search" style="width: 240px; margin-right: 10px" placeholder="请输入名称查询"></el-input>
+      <el-input v-model="data.title" prefix-icon="Search" style="width: 240px; margin-right: 10px" placeholder="请输入电影名称查询"></el-input>
+      <el-select v-model="data.status" placeholder="请选择电影状态" style="width: 240px; margin-right: 10px">
+        <el-option label="待上映" value="待上映" />
+        <el-option label="已上映" value="已上映" />
+        <el-option label="停止上映" value="停止上映" />
+      </el-select>
       <el-button type="info" plain @click="load">查询</el-button>
       <el-button type="warning" plain style="margin: 0 10px" @click="reset">重置</el-button>
     </div>
-    <div class="card" style="margin-bottom: 5px">
+    <div class="card" style="margin-bottom: 5px" v-if="data.user.role === 'ADMIN'">
       <el-button type="primary" plain @click="handleAdd">新增</el-button>
       <el-button type="danger" plain @click="delBatch">批量删除</el-button>
     </div>
 
     <div class="card" style="margin-bottom: 5px">
-      <el-table tooltip-effect="dark widthStyle" stripe :data="data.tableData" @selection-change="handleSelectionChange" >
-        <el-table-column type="selection" width="55" />
+      <el-table tooltip-effect="dark widthStyle" stripe :data="data.tableData" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55" v-if="data.user.role === 'ADMIN'" />
         <el-table-column type="expand">
           <template #default="props">
             <el-descriptions class="margin-top" title="电影信息" :column="5" border>
               <el-descriptions-item label="电影名称">{{ props.row.title }}</el-descriptions-item>
               <el-descriptions-item label="英文名称">{{ props.row.english }}</el-descriptions-item>
               <el-descriptions-item label="上映日期">{{ props.row.start }}</el-descriptions-item>
-              <el-descriptions-item label="电影时长">{{ props.row.time }}分钟</el-descriptions-item>
+              <el-descriptions-item label="电影时长">{{ props.row.time }} 分钟</el-descriptions-item>
               <el-descriptions-item label="电影类型">
-                <el-tag v-for="item in scope.row.types" type="info" style="margin-right: 5px;margin-bottom: 5px">{{item}}</el-tag>
+                <el-tag v-for="item in props.row.types" type="info" style="margin-right: 5px">{{ item }}</el-tag>
               </el-descriptions-item>
               <el-descriptions-item label="电影语言">{{ props.row.language }}</el-descriptions-item>
               <el-descriptions-item label="电影分辨率">{{ props.row.resolution }}</el-descriptions-item>
@@ -34,7 +39,7 @@
               </el-descriptions-item>
               <el-descriptions-item label="电影封面">
                 <el-image style="width: 40px; height: 40px; display: block" v-if="props.row.img"
-                          :src="props.row.front" :preview-src-list="[props.row.img]" preview-teleported></el-image>
+                          :src="props.row.img" :preview-src-list="[props.row.img]" preview-teleported></el-image>
               </el-descriptions-item>
               <el-descriptions-item label="制作公司">
                 <el-popover placement="top-start" title="制作公司" :width="200" trigger="hover" :content="props.row.employ">
@@ -47,16 +52,15 @@
               <el-descriptions-item label="电影状态">
                 <el-tag v-if="props.row.status === '待上映'" type="warning">{{ props.row.status }}</el-tag>
                 <el-tag v-if="props.row.status === '已上映'" type="success">{{ props.row.status }}</el-tag>
-                <el-tag v-if="props.row.status === '停止上映'" type="danger">{{ props.row.status }}</el-tag>}
+                <el-tag v-if="props.row.status === '停止上映'" type="danger">{{ props.row.status }}</el-tag>
               </el-descriptions-item>
               <el-descriptions-item label="电影评分">
                 <el-rate
-                  v-model="props.row.score"
-                  disabled
-                  show-score
-                  text-color="#ff9900"
-                  score-template="{value} 分"
-                  />
+                    v-model="props.row.score"
+                    disabled
+                    :max="10"
+                    text-color="#ff9900"
+                />
               </el-descriptions-item>
             </el-descriptions>
           </template>
@@ -86,11 +90,8 @@
             <el-tag v-if="scope.row.status === '停止上映'" type="danger">{{ scope.row.status }}</el-tag>
           </template>
         </el-table-column>
-
-        <el-table-column label="操作" width="100" fixed="right">
+        <el-table-column label="操作" width="100" fixed="right" v-if="data.user.role === 'ADMIN'">
           <template v-slot="scope">
-            <el-button type="success" circle :icon="Select" @click="handleStatus(scope.row, '审核通过')"></el-button>
-            <el-button type="info" circle :icon="CloseBold" @click="handleStatus(scope.row, '审核拒绝')"></el-button>
             <el-button type="primary" circle :icon="Edit" @click="handleEdit(scope.row)"></el-button>
             <el-button type="danger" circle :icon="Delete" @click="del(scope.row.id)"></el-button>
           </template>
@@ -191,18 +192,20 @@
 import {reactive} from "vue";
 import request from "@/utils/request.js";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {Delete, Edit, Select, CloseBold} from "@element-plus/icons-vue";
+import {Delete, Edit} from "@element-plus/icons-vue";
 
 const baseUrl = import.meta.env.VITE_BASE_URL
 
 const data = reactive({
+  user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
   formVisible: false,
   form: {},
   tableData: [],
   pageNum: 1,
-  pageSize: 10,
+  pageSize: 8,
   total: 0,
-  name: null,
+  title: null,
+  status: null,
   ids: [],
   typeData: [],
   areaData: []
@@ -230,24 +233,20 @@ const loadArea = () => {
   }
   )
 }
-
-const handleStatus = (row, status) => {
-  data.form = JSON.parse(JSON.stringify(row))
-  data.form.status = status
-  update()
-}
-
 const load = () => {
   request.get('/film/selectPage', {
     params: {
       pageNum: data.pageNum,
       pageSize: data.pageSize,
-      name: data.name
+      title: data.title,
+      status: data.status,
     }
   }).then(res => {
     if (res.code === '200') {
       data.tableData = res.data?.list || []
       data.total = res.data?.total
+    } else {
+      ElMessage.error(res.msg)
     }
   })
 }
@@ -324,17 +323,10 @@ const handleSelectionChange = (rows) => {
 const handleFileUpload = (res) => {
   data.form.img = res.data
 }
-const handleFrontUpload = (res) => {
-  data.form.front = res.data
-}
-const handleBackUpload = (res) => {
-  data.form.back = res.data
-}
-const handleCertificateUpload = (res) => {
-  data.form.certificate = res.data
-}
+
 const reset = () => {
-  data.name = null
+  data.title = null
+  data.status = null
   load()
 }
 
@@ -342,7 +334,7 @@ load()
 loadType()
 loadArea()
 </script>
-<style >
+<style>
 .line1 {
   overflow:hidden;
   text-overflow:ellipsis;

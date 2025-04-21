@@ -17,9 +17,17 @@ public class Film {
     private Integer areaId;
     private String status;
     private Double score;
+    private Double total;
+
     private String areaName;
     private List<Integer> ids;
     private List<String> types;
+
+    private String typeId;
+    private String year;
+
+    private List<String> actors;
+
 
     public Integer getId() {
         return id;
@@ -53,14 +61,6 @@ public class Film {
         this.time = time;
     }
 
-    public List<Integer> getIds() {
-        return ids;
-    }
-
-    public void setIds(List<Integer> ids) {
-        this.ids = ids;
-    }
-
     public String getEnglish() {
         return english;
     }
@@ -85,20 +85,20 @@ public class Film {
         this.typeIds = typeIds;
     }
 
-    public String getResolution() {
-        return resolution;
-    }
-
-    public void setResolution(String resolution) {
-        this.resolution = resolution;
-    }
-
     public String getLanguage() {
         return language;
     }
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public String getResolution() {
+        return resolution;
+    }
+
+    public void setResolution(String resolution) {
+        this.resolution = resolution;
     }
 
     public String getImg() {
@@ -141,6 +141,14 @@ public class Film {
         this.areaName = areaName;
     }
 
+    public List<Integer> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<Integer> ids) {
+        this.ids = ids;
+    }
+
     public List<String> getTypes() {
         return types;
     }
@@ -155,5 +163,37 @@ public class Film {
 
     public void setScore(Double score) {
         this.score = score;
+    }
+
+    public String getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public List<String> getActors() {
+        return actors;
+    }
+
+    public void setActors(List<String> actors) {
+        this.actors = actors;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
     }
 }
