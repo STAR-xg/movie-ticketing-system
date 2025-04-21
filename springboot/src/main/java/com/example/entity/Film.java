@@ -29,6 +29,7 @@ public class Film {
     private List<String> actors;
 
 
+
     public Integer getId() {
         return id;
     }
@@ -196,4 +197,5 @@ public class Film {
     public void setTotal(Double total) {
         this.total = total;
     }
+
 }

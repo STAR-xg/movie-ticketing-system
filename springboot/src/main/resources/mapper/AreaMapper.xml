@@ -8,6 +8,7 @@
         <where>
             <if test="title != null"> and title like concat('%', #{title}, '%')</if>
         </where>
+        order by id desc
     </select>
 
     <delete id="deleteById">

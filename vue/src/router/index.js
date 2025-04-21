@@ -28,6 +28,7 @@ const router = createRouter({
         { path: 'home', component: () => import('@/views/front/Home.vue'),  },
         { path: 'person', component: () => import('@/views/front/Person.vue'),  },
         { path: 'password', component: () => import('@/views/front/Password.vue'),  },
+        { path: 'film', component: () => import('@/views/front/Film.vue'),  },
       ]
     },
     { path: '/login', component: () => import('@/views/Login.vue') },

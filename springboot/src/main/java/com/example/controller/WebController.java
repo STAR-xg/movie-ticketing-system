@@ -1,5 +1,8 @@
 package com.example.controller;
 
+import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import com.example.common.Result;
 import com.example.common.enums.RoleEnum;
 import com.example.entity.Account;
@@ -8,6 +11,9 @@ import com.example.service.CinemaService;
 import com.example.service.UserService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.List;
 
 @RestController
 public class WebController {
@@ -75,6 +81,16 @@ public class WebController {
             userService.updatePassword(account);
         }
         return Result.success();
+    }
+    /**
+     * 获取最近20年
+     */
+    @GetMapping("/getYear")
+    public Result getYear() {
+        Date today = new Date();
+        DateTime  start = DateUtil.offsetMonth(today, -12 * 19);
+        List<Integer> yearList = DateUtil.rangeToList(start, today, DateField.YEAR).stream().map(DateUtil::year).toList();
+        return Result.success(yearList.reversed());
     }
 
 }
