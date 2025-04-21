@@ -1,10 +1,9 @@
 <template>
   <div>
-    <div class="front-notice"><el-icon><Bell /></el-icon>公告：{{ data.top }}</div>
     <div class="front-header">
       <div class="front-header-left">
-        <img src="@/assets/imgs/logo.png" alt="">
-        <div class="title">项目前台</div>
+        <img src="@/assets/imgs/logo1.png" alt="">
+        <div class="title">电影购票网站</div>
       </div>
       <div class="front-header-center">
         <el-menu :default-active="router.currentRoute.value.path" router mode="horizontal">
