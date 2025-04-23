@@ -88,7 +88,7 @@ public class WebController {
     @GetMapping("/getYear")
     public Result getYear() {
         Date today = new Date();
-        DateTime  start = DateUtil.offsetMonth(today, -12 * 19);
+        DateTime start = DateUtil.offsetMonth(today, -12 * 19);
         List<Integer> yearList = DateUtil.rangeToList(start, today, DateField.YEAR).stream().map(DateUtil::year).toList();
         return Result.success(yearList.reversed());
     }

@@ -153,13 +153,11 @@ load()
   margin: 5px 0;
   cursor: pointer;
 }
-
 .item_active {
   background-color: #ef4238;
   color: white;
   border: none;
 }
-
 .el-col-5 {
   width: 20%;
   max-width: 20%;
