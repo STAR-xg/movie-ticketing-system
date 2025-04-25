@@ -47,6 +47,7 @@
             <el-menu-item index="/manager/type">电影分类</el-menu-item>
             <el-menu-item index="/manager/area">电影区域</el-menu-item>
             <el-menu-item index="/manager/film">电影信息</el-menu-item>
+            <el-menu-item index="/manager/video">电影预告</el-menu-item>
             <el-menu-item index="/manager/actor">演职人员</el-menu-item>
             <el-menu-item index="/manager/notice">系统公告</el-menu-item>
           </el-sub-menu>
