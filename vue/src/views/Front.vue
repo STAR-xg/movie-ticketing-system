@@ -9,6 +9,7 @@
         <el-menu :default-active="router.currentRoute.value.path" router mode="horizontal">
           <el-menu-item index="/front/home">首页</el-menu-item>
           <el-menu-item index="/front/film">电影</el-menu-item>
+          <el-menu-item index="/front/cinema">影院</el-menu-item>
         </el-menu>
       </div>
       <div class="front-header-right">
