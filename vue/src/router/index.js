@@ -21,6 +21,7 @@ const router = createRouter({
         { path: 'actor', meta: { name: '演职人员' }, component: () => import('@/views/manager/Actor.vue'), },
         { path: 'video', meta: { name: '电影预告' }, component: () => import('@/views/manager/Video.vue'), },
         { path: 'certificate', meta: { name: '资质认证' }, component: () => import('@/views/manager/Certificate.vue'), },
+        { path: 'room', meta: { name: '影厅房间' }, component: () => import('@/views/manager/Room.vue'), },
 
       ]
     },
