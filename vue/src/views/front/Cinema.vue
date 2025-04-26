@@ -44,7 +44,7 @@ const loadCinema = () => {
     params: {
       pageNum: data.pageNum,
       pageSize: data.pageSize,
-      // status: '审核通过'
+       status: '审核通过'
     }
   }).then(res => {
     if (res.code === '200') {
