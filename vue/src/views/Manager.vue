@@ -20,6 +20,7 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item @click="router.push('/manager/person')">个人资料</el-dropdown-item>
+              <el-dropdown-item @click="router.push('/manager/certificate')">资质认证</el-dropdown-item>
               <el-dropdown-item @click="router.push('/manager/password')">修改密码</el-dropdown-item>
               <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
@@ -44,14 +45,14 @@
               <span>信息管理</span>
             </template>
 
-            <el-menu-item index="/manager/type">电影分类</el-menu-item>
-            <el-menu-item index="/manager/area">电影区域</el-menu-item>
-            <el-menu-item index="/manager/film">电影信息</el-menu-item>
-            <el-menu-item index="/manager/video">电影预告</el-menu-item>
-            <el-menu-item index="/manager/actor">演职人员</el-menu-item>
-            <el-menu-item index="/manager/notice">系统公告</el-menu-item>
+            <el-menu-item index="/manager/type" v-if="data.user.role ==='ADMIN'">电影分类</el-menu-item>
+            <el-menu-item index="/manager/area" v-if="data.user.role ==='ADMIN'">电影区域</el-menu-item>
+            <el-menu-item index="/manager/film" v-if="data.user.role ==='ADMIN' ||(data.user.role ==='CINEMA'&& data.user.status ==='审核通过')">电影信息</el-menu-item>
+            <el-menu-item index="/manager/video" v-if="data.user.role ==='ADMIN'">电影预告</el-menu-item>
+            <el-menu-item index="/manager/actor" v-if="data.user.role ==='ADMIN'">演职人员</el-menu-item>
+            <el-menu-item index="/manager/notice" v-if="data.user.role ==='ADMIN'">系统公告</el-menu-item>
           </el-sub-menu>
-          <el-sub-menu index="2">
+          <el-sub-menu index="2" v-if="data.user.role ==='ADMIN'">
             <template #title>
               <el-icon><Menu /></el-icon>
               <span>用户管理</span>
