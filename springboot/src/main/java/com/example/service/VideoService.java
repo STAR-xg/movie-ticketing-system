@@ -1,5 +1,6 @@
 package com.example.service;
 
+import cn.hutool.core.date.DateUtil;
 import com.example.entity.Video;
 import com.example.mapper.VideoMapper;
 import com.github.pagehelper.PageHelper;
@@ -19,6 +20,7 @@ public class VideoService {
     private VideoMapper videoMapper;
 
     public void add(Video video) {
+        video.setTime(DateUtil.now());
         videoMapper.insert(video);
     }
 
