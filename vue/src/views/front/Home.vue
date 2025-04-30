@@ -9,7 +9,7 @@
         <el-row :gutter="15">
           <el-col :span="6" v-for="item in data.playingData" style="margin-bottom: 20px">
             <img :src="item.img" alt="" style="width: 100%; height: 260px; border-top-left-radius: 5px; border-top-right-radius: 5px">
-            <el-button type="primary" plain style="width: 100%; height: 35px">购票</el-button>
+            <el-button type="primary" plain style="width: 100%; height: 35px" @click="navTo('/front/filmDetail?id=' + item.id)">购票</el-button>
           </el-col>
         </el-row>
       </div>
@@ -21,7 +21,7 @@
       </div>
       <div style="margin-top: 20px">
         <el-row :gutter="15">
-          <el-col :span="6" v-for="item in data.noPlayData" style="margin-bottom: 20px; cursor: pointer">
+          <el-col :span="6" v-for="item in data.noPlayData" style="margin-bottom: 20px; cursor: pointer" @click="navTo('/front/filmDetail?id=' + item.id)">
             <img :src="item.img" alt="" style="width: 100%; height: 260px; border-top-left-radius: 5px; border-top-right-radius: 5px">
             <div style="margin-top: 5px; font-size: 18px">{{ item.title }}</div>
             <div style="margin-top: 5px; font-size: 16px; color: orange">{{ item.start }} 上映</div>
@@ -46,6 +46,12 @@ const data = reactive({
   playingData: [],
   noPlayData: []
 })
+
+const navTo = (url) => {
+  location.href = url
+}
+
+
 const load = () => {
   request.get('/film/selectAll').then(res => {
     if (res.code === '200') {
