@@ -32,7 +32,8 @@
             </div>
           </div>
           <el-button
-              style="background-color: #ef4238; border: none; color: white; width: 100%; margin-top: 10px; height: 40px; font-size: 16px">
+              style="background-color: #ef4238; border: none; color: white; width: 100%; margin-top: 10px; height: 40px; font-size: 16px"
+              @click="$router.push('/front/filmCinema?id=' + data.filmData.id)">
             特惠购票
           </el-button>
         </div>
@@ -179,7 +180,7 @@
 import {reactive, ref} from "vue";
 import request from "@/utils/request.js";
 import {ElMessage} from "element-plus";
-import router from "@/router/index.js";
+import router from "@/router/index.js"
 
 const data = reactive({
   filmId: router.currentRoute.value.query.id,

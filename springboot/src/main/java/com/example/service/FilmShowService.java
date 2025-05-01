@@ -1,10 +1,13 @@
 package com.example.service;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.example.common.enums.RoleEnum;
 import com.example.entity.Account;
 import com.example.entity.Area;
+import com.example.entity.Cinema;
 import com.example.entity.FilmShow;
 import com.example.mapper.AreaMapper;
+import com.example.mapper.CinemaMapper;
 import com.example.mapper.FilmShowMapper;
 import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
@@ -12,7 +15,9 @@ import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 放映记录
@@ -22,6 +27,8 @@ public class FilmShowService {
 
     @Resource
     private FilmShowMapper filmShowMapper;
+    @Resource
+    private CinemaMapper cinemaMapper;
 
     public void add(FilmShow filmShow) {
         Account currentUser = TokenUtils.getCurrentUser();
@@ -61,4 +68,18 @@ public class FilmShowService {
         return PageInfo.of(list);
     }
 
+    public List<Cinema> selectByFilmId(Integer filmId) {
+        FilmShow filmShow = new FilmShow();
+        filmShow.setFilmId(filmId);
+        List<FilmShow> filmShows = filmShowMapper.selectAll(filmShow);
+        List<FilmShow> collect = filmShows.stream().filter(x -> "购票中".equals(x.getStatus())).collect(Collectors.toList());
+        List<Cinema> list = new ArrayList<>();
+        for (FilmShow show : collect) {
+            Cinema cinema = cinemaMapper.selectById(show.getCinemaId());
+            if (ObjectUtil.isNotEmpty(cinema)) {
+                list.add(cinema);
+            }
+        }
+        return list;
+    }
 }

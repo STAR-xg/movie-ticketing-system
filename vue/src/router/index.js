@@ -36,6 +36,7 @@ const router = createRouter({
         { path: 'film', component: () => import('@/views/front/Film.vue'),  },
         { path: 'cinema', component: () => import('@/views/front/Cinema.vue'),  },
         { path: 'filmDetail', component: () => import('@/views/front/FilmDetail.vue'),  },
+        { path: 'filmCinema', component: () => import('@/views/front/FilmCinema.vue'),  },
       ]
     },
     { path: '/login', component: () => import('@/views/Login.vue') },
