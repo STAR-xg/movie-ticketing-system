@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.common.Result;
 import com.example.entity.Area;
 import com.example.entity.Cinema;
+import com.example.entity.Film;
 import com.example.entity.FilmShow;
 import com.example.service.AreaService;
 import com.example.service.FilmShowService;
@@ -72,7 +73,11 @@ public class FilmShowController {
         List<Cinema> list = filmShowService.selectByFilmId(id);
         return Result.success(list);
     }
-
+    @GetMapping("/selectByCinemaId/{id}")
+    public Result selectByCinemaId(@PathVariable Integer id) {
+        List<Film> list = filmShowService.selectByCinemaId(id);
+        return Result.success(list);
+    }
 
 
     /**

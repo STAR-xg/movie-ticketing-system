@@ -1,14 +1,10 @@
 package com.example.service;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.json.JSONUtil;
 import com.example.common.enums.RoleEnum;
-import com.example.entity.Account;
-import com.example.entity.Area;
-import com.example.entity.Cinema;
-import com.example.entity.FilmShow;
-import com.example.mapper.AreaMapper;
-import com.example.mapper.CinemaMapper;
-import com.example.mapper.FilmShowMapper;
+import com.example.entity.*;
+import com.example.mapper.*;
 import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -29,6 +25,12 @@ public class FilmShowService {
     private FilmShowMapper filmShowMapper;
     @Resource
     private CinemaMapper cinemaMapper;
+    @Resource
+    private FilmMapper filmMapper;
+    @Resource
+    private TypeMapper typeMapper;
+    @Resource
+    private ActorMapper actorMapper;
 
     public void add(FilmShow filmShow) {
         Account currentUser = TokenUtils.getCurrentUser();
@@ -78,6 +80,38 @@ public class FilmShowService {
             Cinema cinema = cinemaMapper.selectById(show.getCinemaId());
             if (ObjectUtil.isNotEmpty(cinema)) {
                 list.add(cinema);
+            }
+        }
+        return list;
+    }
+    public List<Film> selectByCinemaId(Integer cinemaId) {
+        FilmShow filmShow = new FilmShow();
+        filmShow.setCinemaId(cinemaId);
+        List<FilmShow> filmShows = filmShowMapper.selectAll(filmShow);
+        List<FilmShow> collect = filmShows.stream().filter(x -> "购票中".equals(x.getStatus())).collect(Collectors.toList());
+        List<Film> list = new ArrayList<>();
+        for (FilmShow show : collect) {
+            Film film = filmMapper.selectById(show.getFilmId());
+            if (ObjectUtil.isNotEmpty(film)) {
+                List<String> tmpList = new ArrayList<>();
+                List<Integer> ids = JSONUtil.toList(film.getTypeIds(), Integer.class);
+                // 初始化电影分类信息
+                for (Integer typeId : ids) {
+                    Type type = typeMapper.selectById(typeId);
+                    if (ObjectUtil.isNotEmpty(type)) {
+                        tmpList.add(type.getTitle());
+                    }
+                }
+                film.setTypes(tmpList);
+
+                // 初始化演职人员信息
+                Actor actor = new Actor();
+                actor.setFilmId(film.getId());
+                List<Actor> actorList = actorMapper.selectAll(actor);
+                List<String> actors = actorList.stream().map(Actor::getName).collect(Collectors.toList());
+                film.setActors(actors);
+
+                list.add(film);
             }
         }
         return list;
