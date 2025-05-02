@@ -38,6 +38,7 @@ const router = createRouter({
         { path: 'filmDetail', component: () => import('@/views/front/FilmDetail.vue'),  },
         { path: 'cinemaDetail', component: () => import('@/views/front/CinemaDetail.vue'),  },
         { path: 'filmCinema', component: () => import('@/views/front/FilmCinema.vue'),  },
+        { path: 'collect', component: () => import('@/views/front/Collect.vue'),  },
       ]
     },
     { path: '/login', component: () => import('@/views/Login.vue') },

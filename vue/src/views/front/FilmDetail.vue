@@ -13,57 +13,43 @@
           <div style="margin-top: 5px">{{ data.filmData.start }} 中国大陆上映</div>
           <div style="display: flex; margin-top: 55px">
             <div style="flex: 1; margin-right: 5px">
-              <el-button
-                  style="width: 100%; height: 40px; font-size: 16px; background-color: #5a3686; border: none; color: white">
-                <el-icon size="large">
-                  <Star/>
-                </el-icon>
-                <span style="margin-left: 5px">想看</span>
+              <el-button v-if="data.collectFlag" @click="collect" style="width: 100%; height: 40px; font-size: 16px; background-color: #5a3686; border: none; color: white">
+                <el-icon size="24" style="color: orange"><StarFilled /></el-icon><span style="margin-left: 5px">已想看</span>
+              </el-button>
+              <el-button v-else @click="collect" style="width: 100%; height: 40px; font-size: 16px; background-color: #5a3686; border: none; color: white">
+                <el-icon size="large"><Star /></el-icon> <span style="margin-left: 5px">想看</span>
               </el-button>
             </div>
             <div style="flex: 1; margin-left: 5px">
-              <el-button
-                  style="width: 100%; height: 40px; font-size: 16px; background-color: #5a3686; border: none; color: white">
-                <el-icon size="large">
-                  <ChatDotSquare/>
-                </el-icon>
-                <span style="margin-left: 5px">评分</span>
+              <el-button v-if="data.scoreFlag" style="width: 100%; height: 40px; font-size: 16px; background-color: #5a3686; border: none; color: white" @click="">
+                <el-icon size="24" style="color: orange"><Comment /></el-icon> <span style="margin-left: 5px">已评分</span>
+              </el-button>
+              <el-button v-else style="width: 100%; height: 40px; font-size: 16px; background-color: #5a3686; border: none; color: white" @click="scoreInit" v-if="data.filmData.status === '已上映'">
+                <el-icon size="large"><ChatDotSquare /></el-icon> <span style="margin-left: 5px">评分</span>
               </el-button>
             </div>
           </div>
-          <el-button
-              style="background-color: #ef4238; border: none; color: white; width: 100%; margin-top: 10px; height: 40px; font-size: 16px"
-              @click="$router.push('/front/filmCinema?id=' + data.filmData.id)">
-            特惠购票
-          </el-button>
+          <el-button style="background-color: #ef4238; border: none; color: white; width: 100%; margin-top: 10px; height: 40px; font-size: 16px" @click="$router.push('/front/filmCinema?id=' + data.filmData.id)">特惠购票</el-button>
         </div>
         <div style="width: 250px; color: white">
           <div style="font-size: 12px">影片口碑</div>
           <div style="display: flex; align-items: center">
-            <div style="width: 100px; font-weight: bold; font-size: 16px"><span
-                style="font-size: 30px">{{ data.filmData.score }}</span> 分
-            </div>
+            <div style="width: 100px; font-weight: bold; font-size: 16px"><span style="font-size: 30px">{{ data.filmData.score }}</span> 分</div>
             <div style="flex: 1">
-              <el-rate v-model="data.filmData.score" disabled/>
-              <div>2人评分</div>
+              <div><el-rate v-model="data.halfScore" disabled/></div>
+              <div>{{ data.scoreTime }}人评分</div>
             </div>
           </div>
           <div style="margin-top: 10px; font-size: 12px">累计票房</div>
-          <div style="margin-top: 5px; font-weight: bold; font-size: 16px"><span style="font-size: 25px">500.23</span> 元
-          </div>
+          <div style="margin-top: 5px; font-weight: bold; font-size: 16px"><span style="font-size: 25px">{{ (data.filmData.total * 1).toFixed(2) }}</span> 元</div>
         </div>
       </div>
     </div>
     <div style="width: 55%; margin: 50px auto; display: flex">
       <div style="flex: 1">
         <div style="font-size: 20px; border-left: 3px solid red; padding-left: 5px; line-height: 30px">剧情简介</div>
-        <div style="margin-top: 10px; padding: 10px; line-height: 20px; color: #333333; text-align: justify">
-          {{ data.filmData.content }}
-        </div>
-        <div
-            style="font-size: 20px; border-left: 3px solid red; padding-left: 5px; line-height: 30px; margin-top: 40px">
-          演职人员
-        </div>
+        <div style="margin-top: 10px; padding: 10px; line-height: 20px; color: #333333; text-align: justify">{{ data.filmData.content }}</div>
+        <div style="font-size: 20px; border-left: 3px solid red; padding-left: 5px; line-height: 30px; margin-top: 40px">演职人员</div>
         <div style="margin-top: 20px" v-if="data.actorData && data.actorData.length > 0">
           <el-row :gutter="10">
             <el-col :span="5" v-for="item in data.actorData.filter(v => v.role === '导演')" style="margin-bottom: 20px">
@@ -91,15 +77,10 @@
         <div style="margin-top: 20px; padding-left: 20px" v-else>
           管理员暂未录入演职人员信息
         </div>
-        <div
-            style="font-size: 20px; border-left: 3px solid red; padding-left: 5px; line-height: 30px; margin-top: 40px">
-          出品信息
-        </div>
+        <div style="font-size: 20px; border-left: 3px solid red; padding-left: 5px; line-height: 30px; margin-top: 40px">出品信息</div>
         <div style="margin-top: 20px; display: flex">
           <div style="flex: 1; border: 1px solid #eeebeb; display: flex; align-items: center; padding: 30px">
-            <el-icon size="22" style="width: 60px">
-              <VideoCamera/>
-            </el-icon>
+            <el-icon size="22" style="width: 60px"><VideoCamera /></el-icon>
             <div style="flex: 1; width: 0">
               <div style="font-size: 18px">出品发行</div>
               <el-popover
@@ -116,44 +97,33 @@
             </div>
           </div>
           <div style="flex: 1; border: 1px solid #eeebeb; display: flex; align-items: center; padding: 30px">
-            <el-icon size="22" style="width: 60px">
-              <VideoPlay/>
-            </el-icon>
+            <el-icon size="22" style="width: 60px"><VideoPlay /></el-icon>
             <div style="flex: 1">
               <div style="font-size: 18px">技术参考</div>
               <div style="font-size: 16px; margin-top: 5px">{{ data.filmData.time }} 分钟</div>
             </div>
           </div>
         </div>
-        <div
-            style="font-size: 20px; border-left: 3px solid red; padding-left: 5px; line-height: 30px; margin-top: 40px">
-          票房
-        </div>
+        <div style="font-size: 20px; border-left: 3px solid red; padding-left: 5px; line-height: 30px; margin-top: 40px">票房</div>
         <div style="margin-top: 20px; display: flex; background-color: #f8f8f8; padding: 30px 40px">
           <div style="flex: 1">
-            <div style="font-size: 26px; text-align: center; color: red">8</div>
+            <div style="font-size: 26px; text-align: center; color: red">{{ data.priceRanking }}</div>
             <div style="font-size: 20px; text-align: center">票房排名</div>
           </div>
           <div style="flex: 1">
-            <div style="font-size: 26px; text-align: center; color: red">29.9</div>
+            <div style="font-size: 26px; text-align: center; color: red">{{ (data.todayPrice * 1).toFixed(2) }}</div>
             <div style="font-size: 20px; text-align: center">今日票房（元）</div>
           </div>
           <div style="flex: 1">
-            <div style="font-size: 26px; text-align: center; color: red">29.9</div>
+            <div style="font-size: 26px; text-align: center; color: red">{{ (data.filmData.total * 1).toFixed(2) }}</div>
             <div style="font-size: 20px; text-align: center">总票房（元）</div>
           </div>
         </div>
       </div>
       <div style="width: 360px; margin-left: 30px">
-        <div
-            style="font-size: 20px; border-left: 3px solid red; padding-left: 5px; line-height: 30px; margin-bottom: 20px">
-          预告视频
-        </div>
-        <div style="display: flex; margin-bottom: 20px" v-if="data.videoData && data.videoData.length > 0"
-             v-for="item in data.videoData">
-          <img :src="item.img" alt=""
-               style="width: 120px; height: 70px; border-radius: 5px; cursor: pointer; border: 1px solid #cccccc"
-               @click="viewInit(item)">
+        <div style="font-size: 20px; border-left: 3px solid red; padding-left: 5px; line-height: 30px; margin-bottom: 20px">预告视频</div>
+        <div style="display: flex; margin-bottom: 20px" v-if="data.videoData && data.videoData.length > 0" v-for="item in data.videoData">
+          <img :src="item.img" alt="" style="width: 120px; height: 70px; border-radius: 5px; cursor: pointer; border: 1px solid #cccccc" @click="viewInit(item)">
           <div style="flex: 1; margin-left: 20px">
             <div style="line-height: 20px; height: 40px; font-weight: bold" class="line2">{{ item.name }}</div>
             <div style="line-height: 20px; margin-top: 10px">{{ item.time }}</div>
@@ -173,6 +143,25 @@
         </div>
       </div>
     </el-dialog>
+    <el-dialog title="电影评分" v-model="data.scoreVisible" width="40%" destroy-on-close>
+      <el-form ref="form" label-width="70px" style="padding: 20px">
+        <el-form-item prop="score" label="电影评分">
+          <el-rate
+              v-model="data.score"
+              :max="10"
+              show-score
+              text-color="#ff9900"
+              score-template="{value} 分"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="data.scoreVisible = false">取 消</el-button>
+          <el-button type="primary" @click="submitScore">提 交</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -180,21 +169,53 @@
 import {reactive, ref} from "vue";
 import request from "@/utils/request.js";
 import {ElMessage} from "element-plus";
-import router from "@/router/index.js"
+import router from "@/router/index.js";
 
 const data = reactive({
+  user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
   filmId: router.currentRoute.value.query.id,
   filmData: {},
   videoData: [],
   form: {},
   formVisible: false,
   actorData: [],
+  collectFlag: false,
 })
+
+const loadCollect = () => {
+  request.get('/collect/selectAll', {
+    params: {
+      userId: data.user.id,
+      filmId: data.filmId
+    }
+  }).then(res => {
+    if (res.code === '200') {
+      data.collectFlag = res.data.length;
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
+}
+const collect = () => {
+  let collectData = {
+    userId: data.user.id,
+    filmId: data.filmId
+  }
+  request.post('/collect/add', collectData).then(res => {
+    if (res.code === '200') {
+      ElMessage.success('操作成功')
+      loadCollect()
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
+}
 const loadFilm = () => {
   data.filmId = router.currentRoute.value.query.id
   request.get('/film/selectById/' + data.filmId).then(res => {
     if (res.code === '200') {
       data.filmData = res.data
+      data.halfScore = (data.filmData.score / 2).toFixed(1)
     } else {
       ElMessage.error(res.msg)
     }
@@ -233,15 +254,15 @@ const viewInit = (item) => {
 loadFilm()
 loadVideo()
 loadActor()
+loadCollect()
 </script>
 
 <style scoped>
 .line1 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
-
 .line2 {
   word-break: break-all;
   text-overflow: ellipsis;
@@ -250,7 +271,6 @@ loadActor()
   -webkit-line-clamp: 2; /* 超出几行省略 */
   overflow: hidden;
 }
-
 .el-col-5 {
   width: 20%;
   max-width: 20%;
