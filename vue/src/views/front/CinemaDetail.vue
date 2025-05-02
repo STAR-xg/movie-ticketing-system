@@ -129,7 +129,7 @@ const loadShow = () => {
   })
 }
 
-onMounted(() =>  {
+onMounted(() => {
   loadCinema()
   loadFilm()
 })

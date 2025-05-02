@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 放映记录
+ * 放映记录业务层方法
  */
 @Service
 public class FilmShowService {
@@ -27,6 +27,8 @@ public class FilmShowService {
     private CinemaMapper cinemaMapper;
     @Resource
     private FilmMapper filmMapper;
+    @Resource
+    private RoomMapper roomMapper;
     @Resource
     private TypeMapper typeMapper;
     @Resource
@@ -84,6 +86,7 @@ public class FilmShowService {
         }
         return list;
     }
+
     public List<Film> selectByCinemaId(Integer cinemaId) {
         FilmShow filmShow = new FilmShow();
         filmShow.setCinemaId(cinemaId);
@@ -94,7 +97,7 @@ public class FilmShowService {
             Film film = filmMapper.selectById(show.getFilmId());
             if (ObjectUtil.isNotEmpty(film)) {
                 List<String> tmpList = new ArrayList<>();
-                List<Integer> ids = JSONUtil.toList(film.getTypeIds(), Integer.class);
+                List<Integer> ids = JSONUtil.toList(film.getTypeIds().replaceAll("&", ""), Integer.class);
                 // 初始化电影分类信息
                 for (Integer typeId : ids) {
                     Type type = typeMapper.selectById(typeId);

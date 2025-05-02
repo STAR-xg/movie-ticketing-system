@@ -3,9 +3,11 @@ package com.example.service;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
+import com.example.entity.Actor;
 import com.example.entity.Area;
 import com.example.entity.Film;
 import com.example.entity.Type;
+import com.example.mapper.ActorMapper;
 import com.example.mapper.AreaMapper;
 import com.example.mapper.FilmMapper;
 import com.example.mapper.TypeMapper;
@@ -31,6 +33,9 @@ public class FilmService {
     private TypeMapper typeMapper;
     @Resource
     private AreaMapper areaMapper;
+    @Resource
+    private ActorMapper actorMapper;
+
     public void add(Film film) {
         List<String> typeIds = new ArrayList<>();
         List<Integer> ids = film.getIds();
@@ -103,5 +108,8 @@ public class FilmService {
         }
         return PageInfo.of(list);
     }
+
+
+
 
 }
