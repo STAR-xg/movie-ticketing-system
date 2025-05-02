@@ -3,7 +3,7 @@
     <div style="flex: 1">
       <div style="display: flex; align-items: center">
         <div style="flex: 1; font-size: 22px; color: #ef4238">正在热播（{{ data.data1?.length }}部）</div>
-        <div style="width: 80px; text-align: right; color: #ef4238; cursor: pointer">全部 ></div>
+        <div style="width: 80px; text-align: right; color: #ef4238; cursor: pointer" @click="$router.push('/front/film')">全部 ></div>
       </div>
       <div style="margin-top: 20px">
         <el-row :gutter="15">
@@ -16,7 +16,7 @@
       <div style="flex: 1; margin-top: 20px">
         <div style="display: flex; align-items: center">
           <div style="flex: 1; font-size: 22px; color: #2d98f3">即将上映（{{ data.data2?.length }}部）</div>
-          <div style="width: 80px; text-align: right; color: #2d98f3; cursor: pointer">全部 ></div>
+          <div style="width: 80px; text-align: right; color: #2d98f3; cursor: pointer"@click="$router.push('/front/film')">全部 ></div>
         </div>
       </div>
       <div style="margin-top: 20px">

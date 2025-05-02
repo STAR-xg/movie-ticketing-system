@@ -20,7 +20,7 @@
       <div style="margin-top: 20px">
         <el-row :gutter="20">
           <el-col :span="4" v-for="item in data.filmData" style="margin-bottom: 20px">
-            <img :src="item.img" alt="" style="width: 100%; height: 180px; border-radius: 5px; cursor: pointer">
+            <img :src="item.img" alt="" style="width: 100%; height: 180px; border-radius: 5px; cursor: pointer" @click="changeFilm(item)">
             <div style="font-size: 16px; margin: 5px 0">{{ item.title }}</div>
             <div style="font-size: 22px; color: orange">{{ item.score }} 分</div>
           </el-col>
@@ -34,7 +34,25 @@
         <div style="margin-top: 10px; display: flex">
           <div style="width: 200px"><span style="color: #666666">时长：</span>{{ data.film.time }} 分钟</div>
           <div style="width: 200px"><span style="color: #666666">类型：</span><span style="margin-right: 5px" v-for="item in data.film.types">{{ item }}</span></div>
-          <div style="flex: 1"><span style="color: #666666">演职人员：</span><span style="margin-right: 5px" v-for="item in data.film.actors">{{ item }}</span></div>
+          <div style="flex: 1"><span style="color: #666666">演职人员：</span>
+            <span v-if="data.film.actors.length" style="margin-right: 5px" v-for="item in data.film.actors">{{ item }}</span>
+            <span v-else>管理员暂未录入演职人员</span>
+          </div>
+        </div>
+        <div style="margin-top: 20px">
+          <el-table stripe :data="data.showData">
+            <el-table-column prop="time" label="放映时间" />
+            <el-table-column prop="roomName" label="放映厅" />
+            <el-table-column prop="price" label="售价" />
+            <el-table-column label="操作" width="100" fixed="right">
+              <template v-slot="scope">
+                <el-button type="danger"  @click="">选座购票</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div style="margin-top: 20px" v-if="data.total">
+          <el-pagination @current-change="loadShow" background layout="total, prev, pager, next" :page-size="data.pageSize" v-model:current-page="data.pageNum" :total="data.total" />
         </div>
       </div>
     </div>
@@ -49,9 +67,14 @@ import router from "@/router/index.js";
 
 const data = reactive({
   cinemaId: router.currentRoute.value.query.id,
+  filmId: router.currentRoute.value.query.filmId,
   cinemaData: {},
   filmData: [],
   film: {},
+  showData: [],
+  pageNum: 1,
+  pageSize: 2,
+  total: 0
 })
 const loadCinema = () => {
   data.cinemaId = router.currentRoute.value.query.id
@@ -67,15 +90,45 @@ const loadFilm = () => {
   request.get('/show/selectByCinemaId/' + data.cinemaId).then(res => {
     if (res.code === '200') {
       data.filmData = res.data
-      if (data.filmData.length > 0) {
-        data.film = data.filmData[0]
-        console.log(data.film)
+      if (data.filmId) {
+        let list = data.filmData.filter(v => v.id + '' === data.filmId)
+        data.film = list[0]
+      } else {
+        if (data.filmData.length > 0) {
+          data.film = data.filmData[0]
+          data.filmId = data.film.id
+        }
       }
+      loadShow()
     } else {
       ElMessage.error(res.msg)
     }
   })
 }
+const changeFilm = (item) => {
+  data.filmId = item.id
+  data.film = item
+  loadShow()
+}
+const loadShow = () => {
+  request.get('/show/selectPage', {
+    params: {
+      pageNum: data.pageNum,
+      pageSize: data.pageSize,
+      filmId: data.filmId,
+      cinemaId: data.cinemaId,
+      status: '购票中'
+    }
+  }).then(res => {
+    if (res.code === '200') {
+      data.showData = res.data.list
+      data.total = res.data.total
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
+}
+
 onMounted(() =>  {
   loadCinema()
   loadFilm()
@@ -83,21 +136,5 @@ onMounted(() =>  {
 </script>
 
 <style scoped>
-.line1 {
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-.line2 {
-  word-break: break-all;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; /* 超出几行省略 */
-  overflow: hidden;
-}
-.el-col-5 {
-  width: 20%;
-  max-width: 20%;
-}
+
 </style>
