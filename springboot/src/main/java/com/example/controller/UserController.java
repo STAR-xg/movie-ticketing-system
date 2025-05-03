@@ -28,6 +28,12 @@ public class UserController {
         return Result.success();
     }
 
+    @PostMapping("/recharge")
+    public Result recharge(@RequestBody User user) {
+        User dbUser = userService.recharge(user);
+        return Result.success(dbUser);
+    }
+
     /**
      * 修改
      */

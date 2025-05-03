@@ -12,6 +12,7 @@ public class User extends Account {
     private String role;
     private String phone;
     private String email;
+    private Double account;
 
     public Integer getId() {
         return id;
@@ -75,5 +76,13 @@ public class User extends Account {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Double getAccount() {
+        return account;
+    }
+
+    public void setAccount(Double account) {
+        this.account = account;
     }
 }

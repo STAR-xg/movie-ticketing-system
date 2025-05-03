@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 业务层方法
+ * 用户信息业务层方法
  */
 @Service
 public class UserService {
@@ -104,5 +104,16 @@ public class UserService {
         User user = new User();
         BeanUtils.copyProperties(account, user);
         add(user);
+    }
+
+    public User recharge(User user) {
+        Double rechargeNum = user.getAccount();
+        User dbUser = userMapper.selectById(user.getId());
+        dbUser.setAccount(dbUser.getAccount() + rechargeNum);
+        userMapper.updateById(dbUser);
+        // 生成token
+        String token = TokenUtils.createToken(dbUser.getId() + "-" + dbUser.getRole(), dbUser.getPassword());
+        dbUser.setToken(token);
+        return dbUser;
     }
 }

@@ -1,6 +1,9 @@
 <template>
   <div style="width: 40%; margin: 20px auto" class="card">
     <div style="font-size: 20px; padding: 20px 20px">个人资料</div>
+    <div style="text-align: right; padding-right: 20px">
+      <el-button type="info" @click="initRecharge">充 值</el-button>
+    </div>
     <el-form ref="user" :model="data.user" label-width="60px" style="padding: 20px">
       <div style="text-align: center; margin-bottom: 20px">
         <el-upload
@@ -25,10 +28,27 @@
       <el-form-item prop="email" label="邮箱">
         <el-input v-model="data.user.email" placeholder="请输入邮箱"></el-input>
       </el-form-item>
+      <el-form-item prop="account" label="余额">
+        <span style="color: red">￥ {{ data.user.account }}</span>
+      </el-form-item>
       <div style="text-align: center">
         <el-button type="primary" @click="update">保 存</el-button>
       </div>
     </el-form>
+
+    <el-dialog title="充值信息" v-model="data.formVisible" width="40%" destroy-on-close>
+      <el-form ref="form" label-width="70px" style="padding: 20px">
+        <el-form-item prop="account" label="充值金额">
+          <el-input-number v-model="data.account" :min="100" :step="1" :precision="2" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="data.formVisible = false">取 消</el-button>
+          <el-button type="primary" @click="recharge">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -40,7 +60,9 @@ import {ElMessage} from "element-plus";
 const baseUrl = import.meta.env.VITE_BASE_URL
 
 const data = reactive({
-  user: JSON.parse(localStorage.getItem('xm-user') || '{}')
+  user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
+  account: 100,
+  formVisible: false,
 })
 
 const handleFileUpload = (res) => {
@@ -54,6 +76,24 @@ const update = () => {
       ElMessage.success('保存成功')
       localStorage.setItem('xm-user', JSON.stringify(data.user))
       emit('updateUser')
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
+}
+const initRecharge = () => {
+  data.formVisible = true
+}
+const recharge = () => {
+  let form = JSON.parse(JSON.stringify(data.user))
+  form.account = data.account
+  request.post('/user/recharge', form).then(res => {
+    if (res.code === '200') {
+      ElMessage.success('操作成功')
+      // 存储用户信息到浏览器的缓存
+      localStorage.setItem('xm-user', JSON.stringify(res.data))
+      data.user = JSON.parse(localStorage.getItem('xm-user') || '{}')
+      data.formVisible = false
     } else {
       ElMessage.error(res.msg)
     }

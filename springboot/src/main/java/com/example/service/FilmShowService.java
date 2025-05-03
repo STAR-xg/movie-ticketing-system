@@ -55,7 +55,29 @@ public class FilmShowService {
     }
 
     public FilmShow selectById(Integer id) {
-        return filmShowMapper.selectById(id);
+        FilmShow filmShow = filmShowMapper.selectById(id);
+        Film film = filmMapper.selectById(filmShow.getFilmId());
+        if (ObjectUtil.isNotEmpty(film)) {
+            List<Integer> typeIds = JSONUtil.toList(film.getTypeIds().replaceAll("&", ""), Integer.class);
+            List<String> types = new ArrayList<>();
+            for (Integer typeId : typeIds) {
+                Type type = typeMapper.selectById(typeId);
+                if (ObjectUtil.isNotEmpty(type)) {
+                    types.add(type.getTitle());
+                }
+            }
+            film.setTypes(types);
+            filmShow.setFilm(film);
+        }
+        Cinema cinema = cinemaMapper.selectById(filmShow.getCinemaId());
+        if (ObjectUtil.isNotEmpty(cinema)) {
+            filmShow.setCinemaName(cinema.getName());
+        }
+        Room room = roomMapper.selectById(filmShow.getRoomId());
+        if (ObjectUtil.isNotEmpty(room)) {
+            filmShow.setRoomName(room.getName());
+        }
+        return filmShow;
     }
 
     public List<FilmShow> selectAll(FilmShow filmShow) {

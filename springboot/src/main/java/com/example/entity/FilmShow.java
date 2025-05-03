@@ -13,6 +13,7 @@ public class FilmShow {
     private String filmImg;
     private String roomName;
     private String cinemaName;
+    private Film film;
 
     public Integer getId() {
         return id;
@@ -78,14 +79,6 @@ public class FilmShow {
         this.filmName = filmName;
     }
 
-    public String getFilmImg() {
-        return filmImg;
-    }
-
-    public void setFilmImg(String filmImg) {
-        this.filmImg = filmImg;
-    }
-
     public String getRoomName() {
         return roomName;
     }
@@ -100,5 +93,21 @@ public class FilmShow {
 
     public void setCinemaName(String cinemaName) {
         this.cinemaName = cinemaName;
+    }
+
+    public String getFilmImg() {
+        return filmImg;
+    }
+
+    public void setFilmImg(String filmImg) {
+        this.filmImg = filmImg;
+    }
+
+    public Film getFilm() {
+        return film;
+    }
+
+    public void setFilm(Film film) {
+        this.film = film;
     }
 }
