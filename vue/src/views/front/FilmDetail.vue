@@ -165,6 +165,7 @@
   </div>
 </template>
 
+
 <script setup>
 import {reactive, ref} from "vue";
 import request from "@/utils/request.js";
@@ -180,7 +181,59 @@ const data = reactive({
   formVisible: false,
   actorData: [],
   collectFlag: false,
+  score: 10,
+  scoreVisible: false,
+  scoreFlag: false,
+  scoreTime: 0,
+  halfScore: 0,
 })
+
+const scoreInit = () => {
+  data.scoreVisible = true
+}
+const submitScore = () => {
+  let scoreData = {
+    filmId: data.filmId,
+    score: data.score
+  }
+  request.post('/score/add', scoreData).then(res => {
+    if (res.code === '200') {
+      ElMessage.success('评分成功')
+      data.scoreVisible = false
+      loadFilm()
+      loadScore()
+      loadScoreTime()
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
+}
+
+const loadScore = () => {
+  request.get('/score/selectAll', {
+    params: {
+      filmId: data.filmId,
+      userId: data.user.id
+    }
+  }).then(res => {
+    if (res.code === '200') {
+      data.scoreFlag = res.data.length
+    }
+  })
+}
+const loadScoreTime = () => {
+  request.get('/score/selectAll', {
+    params: {
+      filmId: data.filmId,
+    }
+  }).then(res => {
+    if (res.code === '200') {
+      data.scoreTime = res.data.length
+    }
+  })
+}
+loadScore()
+loadScoreTime()
 
 const loadCollect = () => {
   request.get('/collect/selectAll', {
@@ -212,6 +265,7 @@ const collect = () => {
 }
 const loadFilm = () => {
   data.filmId = router.currentRoute.value.query.id
+  //data.halfScore = (data.filmData.score / 2).toFixed(1)
   request.get('/film/selectById/' + data.filmId).then(res => {
     if (res.code === '200') {
       data.filmData = res.data

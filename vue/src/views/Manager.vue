@@ -3,7 +3,7 @@
     <div class="manager-header">
       <div class="manager-header-left">
         <img src="@/assets/imgs/logo.png" alt="">
-        <div class="title">电影购票系统</div>
+        <div class="title">电影购票网站</div>
       </div>
       <div class="manager-header-center">
         <el-breadcrumb separator="/">
@@ -35,27 +35,25 @@
                  :default-openeds="['1', '2']"
                  router
         >
-          <el-menu-item index="/manager/home">
-            <el-icon><HomeFilled /></el-icon>
-            <span>系统首页</span>
-          </el-menu-item>
+          <el-menu-item index="/manager/adminHome" v-if="data.user.role === 'ADMIN'"><el-icon><HomeFilled /></el-icon><span>系统首页</span></el-menu-item>
+          <el-menu-item index="/manager/home" v-else><el-icon><HomeFilled /></el-icon><span>系统首页</span></el-menu-item>
           <el-sub-menu index="1">
             <template #title>
               <el-icon><Menu /></el-icon>
               <span>信息管理</span>
             </template>
-
-            <el-menu-item index="/manager/type" v-if="data.user.role ==='ADMIN'">电影分类</el-menu-item>
-            <el-menu-item index="/manager/area" v-if="data.user.role ==='ADMIN'">电影区域</el-menu-item>
-            <el-menu-item index="/manager/film" v-if="data.user.role ==='ADMIN' ||(data.user.role ==='CINEMA'&& data.user.status ==='审核通过')">电影信息</el-menu-item>
-            <el-menu-item index="/manager/room" v-if="data.user.role ==='ADMIN' ||(data.user.role ==='CINEMA'&& data.user.status ==='审核通过')">影厅房间</el-menu-item>
-            <el-menu-item index="/manager/filmShow" v-if="data.user.role ==='ADMIN' ||(data.user.role ==='CINEMA'&& data.user.status ==='审核通过')">放映记录</el-menu-item>
+            <el-menu-item index="/manager/type" v-if="data.user.role === 'ADMIN'">电影分类</el-menu-item>
+            <el-menu-item index="/manager/area" v-if="data.user.role === 'ADMIN'">电影区域</el-menu-item>
+            <el-menu-item index="/manager/film" v-if="data.user.role === 'ADMIN' || (data.user.role === 'CINEMA' && data.user.status === '审核通过')">电影信息</el-menu-item>
+            <el-menu-item index="/manager/video" v-if="data.user.role === 'ADMIN'">预告视频</el-menu-item>
+            <el-menu-item index="/manager/actor" v-if="data.user.role === 'ADMIN'">演职人员</el-menu-item>
+            <el-menu-item index="/manager/room" v-if="data.user.role === 'ADMIN' || (data.user.role === 'CINEMA' && data.user.status === '审核通过')">影厅房间</el-menu-item>
+            <el-menu-item index="/manager/show" v-if="data.user.role === 'ADMIN' || (data.user.role === 'CINEMA' && data.user.status === '审核通过')">放映记录</el-menu-item>
             <el-menu-item index="/manager/orders">购票订单</el-menu-item>
-            <el-menu-item index="/manager/video" v-if="data.user.role ==='ADMIN'">电影预告</el-menu-item>
-            <el-menu-item index="/manager/actor" v-if="data.user.role ==='ADMIN'">演职人员</el-menu-item>
-            <el-menu-item index="/manager/notice" v-if="data.user.role ==='ADMIN'">系统公告</el-menu-item>
+            <el-menu-item index="/manager/score" v-if="data.user.role === 'ADMIN'">电影评分</el-menu-item>
+            <el-menu-item index="/manager/notice" v-if="data.user.role === 'ADMIN'">系统公告</el-menu-item>
           </el-sub-menu>
-          <el-sub-menu index="2" v-if="data.user.role ==='ADMIN'">
+          <el-sub-menu index="2" v-if="data.user.role === 'ADMIN'">
             <template #title>
               <el-icon><Menu /></el-icon>
               <span>用户管理</span>

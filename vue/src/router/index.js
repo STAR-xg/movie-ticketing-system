@@ -24,7 +24,7 @@ const router = createRouter({
         { path: 'room', meta: { name: '影厅房间' }, component: () => import('@/views/manager/Room.vue'), },
         { path: 'filmShow', meta: { name: '放映记录' }, component: () => import('@/views/manager/FilmShow.vue'), },
         { path: 'orders', meta: { name: '购票订单' }, component: () => import('@/views/manager/Orders.vue'), },
-
+        { path: 'score', meta: { name: '电影评分' }, component: () => import('@/views/manager/Score.vue'), },
       ]
     },
     {
