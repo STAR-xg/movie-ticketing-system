@@ -32,6 +32,9 @@
                 <el-dropdown-item @click="router.push('/front/collect')">想看列表</el-dropdown-item>
               </el-dropdown-menu>
               <el-dropdown-menu>
+                <el-dropdown-item @click="router.push('/front/notice')">系统公告</el-dropdown-item>
+              </el-dropdown-menu>
+              <el-dropdown-menu>
                 <el-dropdown-item @click="router.push('/front/password')">修改密码</el-dropdown-item>
               </el-dropdown-menu>
               <el-dropdown-menu>
