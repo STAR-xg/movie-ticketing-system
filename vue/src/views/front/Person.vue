@@ -65,6 +65,17 @@ const data = reactive({
   formVisible: false,
 })
 
+const loadPerson = () => {
+  request.get('/user/selectById/' + data.user.id).then(res => {
+    if (res.code === '200') {
+      data.user = res.data
+      localStorage.setItem('xm-user', JSON.stringify(data.user))
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
+}
+loadPerson()
 const handleFileUpload = (res) => {
   data.user.avatar = res.data
 }

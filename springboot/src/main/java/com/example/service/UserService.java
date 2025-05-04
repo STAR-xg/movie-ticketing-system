@@ -56,7 +56,11 @@ public class UserService {
     }
 
     public User selectById(Integer id) {
-        return userMapper.selectById(id);
+        User dbUser = userMapper.selectById(id);
+        // 生成token
+        String token = TokenUtils.createToken(dbUser.getId() + "-" + dbUser.getRole(), dbUser.getPassword());
+        dbUser.setToken(token);
+        return dbUser;
     }
 
     public List<User> selectAll(User user) {
@@ -100,6 +104,7 @@ public class UserService {
         dbUser.setPassword(account.getNewPassword());
         userMapper.updateById(dbUser);
     }
+
     public void register(Account account) {
         User user = new User();
         BeanUtils.copyProperties(account, user);

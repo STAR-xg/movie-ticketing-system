@@ -23,6 +23,7 @@ const router = createRouter({
         { path: 'certificate', meta: { name: '资质认证' }, component: () => import('@/views/manager/Certificate.vue'), },
         { path: 'room', meta: { name: '影厅房间' }, component: () => import('@/views/manager/Room.vue'), },
         { path: 'filmShow', meta: { name: '放映记录' }, component: () => import('@/views/manager/FilmShow.vue'), },
+        { path: 'orders', meta: { name: '购票订单' }, component: () => import('@/views/manager/Orders.vue'), },
 
       ]
     },
@@ -40,6 +41,7 @@ const router = createRouter({
         { path: 'filmCinema', component: () => import('@/views/front/FilmCinema.vue'),  },
         { path: 'collect', component: () => import('@/views/front/Collect.vue'),  },
         { path: 'seat', component: () => import('@/views/front/Seat.vue'),  },
+        { path: 'orders', component: () => import('@/views/front/Orders.vue'),  },
       ]
     },
     { path: '/login', component: () => import('@/views/Login.vue') },

@@ -77,7 +77,9 @@ const data = reactive({
   showData: {},
   film: {},
   total: 0,
+  // 存储所有已经出售过的座位的按钮坐标
   alreadySaleSeats: [],
+  // 存储用户当前选中的座位按钮坐标
   selectedSeats: []
 })
 const isAlreadySelected = (row, col) => {
@@ -85,10 +87,12 @@ const isAlreadySelected = (row, col) => {
   return arr && arr.length > 0;
 }
 const initType = (row, col) => {
+  // 先判断该坐标的座位有没有在alreadySaleSeats里面，也就是说有么有出售过
   let alreadyArr = data.alreadySaleSeats.filter(v => v.row === row && v.col === col)
   if (alreadyArr && alreadyArr.length > 0) {
     return "danger"
   }
+  // 再判断该坐标的座位有没有在selectedSeats里面，也就是说用户当前有没有选
   let selectedArr = data.selectedSeats.filter(v => v.row === row && v.col === col)
   if (selectedArr && selectedArr.length > 0) {
     return "warning"
@@ -96,14 +100,17 @@ const initType = (row, col) => {
   return "success"
 }
 const selectSeat = (row, col) => {
+  // 如果当前没有选择任何一个座位的时候，无脑塞
   if (!data.selectedSeats.length) {
     addSeat(row, col)
   } else {
 
     let arr = data.selectedSeats.filter(v => v.row === row && v.col === col)
     if (arr && arr.length > 0) {
+      // 我就要把这个座位取消掉，也就是说要把这个坐标从selectedSeats里面移除掉
       data.selectedSeats = data.selectedSeats.filter(v => !(v.row === row && v.col === col))
     } else {
+      // 如果当前点击的座位坐标不在selectedSeats里面，那就说明这个座位仍然是第一次点击，无脑塞进去
       addSeat(row, col)
     }
   }
