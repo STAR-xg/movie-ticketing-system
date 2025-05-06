@@ -109,7 +109,28 @@ public class FilmService {
         return PageInfo.of(list);
     }
 
+    public List<Film> selectTotalTop10() {
+        List<Film> films = filmMapper.selectTotalTop10();
+        for (Film film : films) {
+            initActors(film);
+        }
+        return films;
+    }
 
+    public List<Film> selectScoreTop10() {
+        List<Film> films = filmMapper.selectScoreTop10();
+        for (Film film : films) {
+            initActors(film);
+        }
+        return films;
+    }
 
+    private void initActors(Film film) {
+        Actor actor = new Actor();
+        actor.setFilmId(film.getId());
+        List<Actor> actors = actorMapper.selectAll(actor);
+        List<String> actorsNameList = actors.stream().map(Actor::getName).collect(Collectors.toList());
+        film.setActors(actorsNameList);
+    }
 
 }

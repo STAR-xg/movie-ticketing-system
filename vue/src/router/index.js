@@ -43,6 +43,7 @@ const router = createRouter({
         { path: 'seat', component: () => import('@/views/front/Seat.vue'),  },
         { path: 'orders', component: () => import('@/views/front/Orders.vue'),  },
         { path: 'notice', component: () => import('@/views/front/Notice.vue'),  },
+        { path: 'charts', component: () => import('@/views/front/Charts.vue'),  },
       ]
     },
     { path: '/login', component: () => import('@/views/Login.vue') },

@@ -84,4 +84,22 @@ public class FilmController {
         return Result.success(pageInfo);
     }
 
+    /**
+     * 电影总票房Top10
+     */
+    @GetMapping("/selectTotalTop")
+    public Result selectTotalTop10() {
+        List<Film> list = filmService.selectTotalTop10();
+        return Result.success(list);
+    }
+
+    /**
+     * 电影评分Top10
+     */
+    @GetMapping("/selectScoreTop")
+    public Result selectScoreTop10() {
+        List<Film> list = filmService.selectScoreTop10();
+        return Result.success(list);
+    }
+
 }

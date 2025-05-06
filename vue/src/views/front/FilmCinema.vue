@@ -18,13 +18,12 @@
           <div style="display: flex; align-items: center">
             <div style="width: 100px; font-weight: bold; font-size: 16px"><span style="font-size: 30px">{{ data.filmData.score }}</span> 分</div>
             <div style="flex: 1">
-              <el-rate v-model="data.filmData.score" disabled/>
-              <div>2人评分</div>
+              <el-rate v-model="data.halfScore" disabled/>
+              <div>{{ data.scoreTime }}人评分</div>
             </div>
           </div>
           <div style="margin-top: 10px; font-size: 12px">累计票房</div>
-          <div style="margin-top: 5px; font-weight: bold; font-size: 16px"><span style="font-size: 25px">500.23</span> 元</div>
-        </div>
+          <div style="margin-top: 5px; font-weight: bold; font-size: 16px"><span style="font-size: 25px">{{ (data.filmData.total * 1).toFixed(2) }}</span> 元</div></div>
       </div>
     </div>
     <div style="width: 55%; margin: 50px auto">
@@ -65,7 +64,9 @@ import router from "@/router/index.js";
 const data = reactive({
   filmId: router.currentRoute.value.query.id,
   filmData: {},
-  cinemaData: []
+  cinemaData: [],
+  ScoreTime:0,
+  halfScore: 0,
 })
 const loadCinema = () => {
   request.get('/show/selectByFilmId/' + data.filmId).then(res => {
@@ -81,11 +82,24 @@ const loadFilm = () => {
   request.get('/film/selectById/' + data.filmId).then(res => {
     if (res.code === '200') {
       data.filmData = res.data
+      data.halfScore = (data.filmData.score / 2).toFixed(1)
     } else {
       ElMessage.error(res.msg)
     }
   })
 }
+const loadScoreTime = () => {
+  request.get('/score/selectAll', {
+    params: {
+      filmId: data.filmId,
+    }
+  }).then(res => {
+    if (res.code === '200') {
+      data.scoreTime = res.data.length
+    }
+  })
+}
+loadScoreTime()
 loadFilm()
 loadCinema()
 </script>
