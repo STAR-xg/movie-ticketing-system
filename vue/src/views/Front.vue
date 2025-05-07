@@ -48,6 +48,51 @@
     </div>
     <div class="main-body">
       <RouterView @updateUser="updateUser" />
+      <div style="background-color: #3c3c3c;height: 400px;margin-top: 40px">
+        <div style="width: 50%;margin: 0 auto;display: flex;color: #c2c2c2">
+          <div style="flex: 1;margin-top: 20px">
+            <div style="padding: 10px 0;font-size: 18px">电影购票网站</div>
+            <div style="padding: 5px 0">上亿电影工作人员共同打造的"电影网站"</div>
+            <div style="padding: 5px 0">60,00000 多次购票记录</div>
+            <div style="padding: 5px 0">600,000 个细分分类</div>
+            <div style="padding: 5px 0">760,000,000 次电影播放记录</div>
+            <div style="padding: 5px 0">38,000+ 电影影片</div>
+          </div>
+          <div style="flex: 1;margin-top: 20px">
+            <div style="padding: 10px 0;font-size: 18px">关于我们</div>
+            <div style="padding: 5px 0">关于电影购票网站联系我们</div>
+            <div style="padding: 5px 0">隐私政策商标声明</div>
+            <div style="padding: 5px 0">服务协议</div>
+            <div style="padding: 5px 0">电影购票网站服务协议</div>
+            <div style="padding: 5px 0">网络信息侵权通知指引</div>
+            <div style="padding: 5px 0">电影购票网站服务监督员</div>
+            <div style="padding: 5px 0">网站地图加入电影购票网站</div>
+          </div>
+          <div style="flex: 1;margin-top: 20px">
+            <div style="padding: 10px 0;font-size: 18px">电影咨询服务</div>
+            <div style="display: flex">
+              <div style="flex: 1;padding: 10px 0">电影咨询</div>
+              <div style="flex: 1;padding: 5px 0">影片了解</div>
+            </div>
+            <div style="display: flex">
+              <div style="flex: 1;padding: 10px 0">影院问答</div>
+              <div style="flex: 1;padding: 5px 0">电影详情</div>
+            </div>
+            <div style="display: flex">
+              <div style="flex: 1;padding: 10px 0">影片选择</div>
+              <div style="flex: 1;padding: 5px 0">座位选择</div>
+            </div>
+            <div style="display: flex">
+              <div style="flex: 1;padding: 10px 0">APP下载</div>
+
+            </div>
+            <div style="padding: 5px 0">友情链接：<a style="margin-left:10px;color: red;" href="https://space.bilibili.com/432113931">武哥聊编程</a> <a style="margin-left:10px;color: red;" href="https://space.bilibili.com/402779077">程序员青戈</a> </div>
+          </div>
+        </div>
+        <div style="width: 100%;text-align: center;color: #c2c2c2;margin-top: 40px;font-size: 20px">
+          购买电影票，就上电影购票网站
+        </div>
+      </div>
     </div>
   </div>
 </template>
