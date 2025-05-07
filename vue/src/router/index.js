@@ -44,6 +44,7 @@ const router = createRouter({
         { path: 'orders', component: () => import('@/views/front/Orders.vue'),  },
         { path: 'notice', component: () => import('@/views/front/Notice.vue'),  },
         { path: 'charts', component: () => import('@/views/front/Charts.vue'),  },
+        { path: 'search', component: () => import('@/views/front/Search.vue'),  },
       ]
     },
     { path: '/login', component: () => import('@/views/Login.vue') },

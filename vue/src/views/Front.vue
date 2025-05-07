@@ -14,6 +14,10 @@
           <el-menu-item index="/front/orders">购票记录</el-menu-item>
         </el-menu>
       </div>
+      <div style="width: 450px">
+        <el-input style="width: 250px; margin-right: 5px" size="large" v-model="data.title"></el-input>
+        <el-button type="primary" size="large" @click="navTo('/front/search?title=' + data.title)">搜索</el-button>
+      </div>
       <div class="front-header-right">
         <div v-if="!data.user.id">
           <el-button @click="router.push('/login')">登录</el-button>
@@ -105,9 +109,12 @@
   const data = reactive({
     user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
     top: '',
-    noticeData: []
+    noticeData: [],
+    title: null,
   })
-
+  const navTo = (url) => {
+    location.href = url
+  }
   const logout = () => {
     localStorage.removeItem('xm-user')
     router.push('/login')
