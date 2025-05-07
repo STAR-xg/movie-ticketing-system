@@ -64,8 +64,12 @@ const login = () => {
           setInterval(() => {
             if (res.data.role === 'USER') {
               location.href = '/front/home'
-            } else {
+            }
+            if (res.data.role === 'CINEMA') {
               location.href = '/manager/home'
+            }
+            if (res.data.role === 'ADMIN') {
+              location.href = '/manager/adminHome'
             }
           },500)
 
