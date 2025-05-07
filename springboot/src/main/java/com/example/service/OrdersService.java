@@ -145,4 +145,5 @@ public class OrdersService {
                 .mapToDouble(Orders::getPrice)
                 .sum();
     }
+
 }

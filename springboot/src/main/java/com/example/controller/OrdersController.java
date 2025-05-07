@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.common.Result;
 import com.example.entity.Orders;
+import com.example.service.FilmService;
 import com.example.service.OrdersService;
 import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
@@ -19,6 +20,7 @@ public class OrdersController {
 
     @Resource
     private OrdersService ordersService;
+
 
     /**
      * 新增
@@ -105,5 +107,6 @@ public class OrdersController {
         Double price = ordersService.selectTodayPrice(filmId);
         return Result.success(price);
     }
+
 
 }

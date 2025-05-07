@@ -101,5 +101,10 @@ public class FilmController {
         List<Film> list = filmService.selectScoreTop10();
         return Result.success(list);
     }
+    @GetMapping("/selectPriceRanking/{filmId}")
+    public Result selectPriceRanking(@PathVariable Integer filmId) {
+        Integer ranking = filmService.selectPriceRanking(filmId);
+        return Result.success(ranking);
+    }
 
 }

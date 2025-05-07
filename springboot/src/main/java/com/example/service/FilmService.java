@@ -132,5 +132,17 @@ public class FilmService {
         List<String> actorsNameList = actors.stream().map(Actor::getName).collect(Collectors.toList());
         film.setActors(actorsNameList);
     }
+    public Integer selectPriceRanking(Integer filmId) {
+        List<Film> films = filmMapper.selectAll(new Film());
+        List<Film> rankList = films.stream()
+                .sorted(Comparator.comparingDouble(Film::getTotal).reversed())
+                .collect(Collectors.toList());
+        for (int i = 0; i < rankList.size(); i++) {
+            if (rankList.get(i).getId().equals(filmId)) {
+                return i + 1;
+            }
+        }
+        return null;
+    }
 
 }

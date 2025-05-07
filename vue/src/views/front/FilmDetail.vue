@@ -186,7 +186,32 @@ const data = reactive({
   scoreFlag: false,
   scoreTime: 0,
   halfScore: 0,
+  todayPrice: 0,
+  priceRanking: 0,
 })
+
+
+const loadTodayPrice = () => {
+  request.get('/orders/selectTodayPrice/' + data.filmId).then(res => {
+    if (res.code === '200') {
+      data.todayPrice = res.data
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
+}
+loadTodayPrice()
+const loadPriceRanking = () => {
+  request.get('/film/selectPriceRanking/' + data.filmId).then(res => {
+    if (res.code === '200') {
+      data.priceRanking = res.data
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
+}
+loadPriceRanking()
+
 
 const scoreInit = () => {
   data.scoreVisible = true
