@@ -24,7 +24,9 @@
               <el-button v-if="data.scoreFlag" style="width: 100%; height: 40px; font-size: 16px; background-color: #5a3686; border: none; color: white" @click="">
                 <el-icon size="24" style="color: orange"><Comment /></el-icon> <span style="margin-left: 5px">已评分</span>
               </el-button>
-              <el-button v-else style="width: 100%; height: 40px; font-size: 16px; background-color: #5a3686; border: none; color: white" @click="scoreInit" v-if="data.filmData.status === '已上映'">
+              <el-button v-else style="width: 100%; height: 40px; font-size: 16px; background-color: #5a3686; border: none; color: white"
+                         @click="scoreInit"
+                         v-if="data.filmData.status === '已上映'">
                 <el-icon size="large"><ChatDotSquare /></el-icon> <span style="margin-left: 5px">评分</span>
               </el-button>
             </div>

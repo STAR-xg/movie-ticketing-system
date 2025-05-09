@@ -55,12 +55,7 @@
                 <el-tag v-if="props.row.status === '停止上映'" type="danger">{{ props.row.status }}</el-tag>
               </el-descriptions-item>
               <el-descriptions-item label="电影评分">
-                <el-rate
-                    v-model="props.row.score"
-                    disabled
-                    :max="10"
-                    text-color="#ff9900"
-                />
+                <el-rate v-model="props.row.score" disabled :max="10" text-color="#ff9900"/>
               </el-descriptions-item>
             </el-descriptions>
           </template>
