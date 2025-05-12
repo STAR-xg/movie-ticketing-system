@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -116,6 +117,10 @@ public class FilmShowService {
         List<FilmShow> collect = filmShows.stream().filter(x -> "购票中".equals(x.getStatus())).collect(Collectors.toList());
         List<Film> list = new ArrayList<>();
         for (FilmShow show : collect) {
+            Optional<Film> optional = list.stream().filter(x -> show.getFilmId().equals(x.getId())).findAny();
+            if (optional.isPresent()) {
+                continue;
+            }
             Film film = filmMapper.selectById(show.getFilmId());
             if (ObjectUtil.isNotEmpty(film)) {
                 List<String> tmpList = new ArrayList<>();

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div style="background: linear-gradient(to right, #46187e, #32046b, #32115b); height: 320px">
-      <div style="width: 55%; margin: 0 auto; height: 320px; display: flex; align-items: center">
-        <img :src="data.filmData.img" alt="" style="width: auto; height: 320px;" >
+    <div style="background: linear-gradient(to right, #46187e, #32046b, #32115b); height: 380px">
+      <div style="width: 55%; margin: 0 auto; height: 380px; display: flex; align-items: center">
+        <img :src="data.filmData.img" alt="" style="width: auto; height: 380px;" >
         <div style="flex: 1; color: white; padding: 20px 35px">
           <div style="font-size: 26px">{{ data.filmData.title }}</div>
           <div style="font-size: 16px">{{ data.filmData.english }}</div>
@@ -11,7 +11,7 @@
           </div>
           <div style="margin-top: 5px">{{ data.filmData.areaName }} / {{ data.filmData.time }}分钟</div>
           <div style="margin-top: 5px">{{ data.filmData.start }} 中国大陆上映</div>
-          <div style="display: flex; margin-top: 55px">
+          <div style="display: flex; margin-top: 40px">
             <div style="flex: 1; margin-right: 5px">
               <el-button v-if="data.collectFlag" @click="collect" style="width: 100%; height: 40px; font-size: 16px; background-color: #5a3686; border: none; color: white">
                 <el-icon size="24" style="color: orange"><StarFilled /></el-icon><span style="margin-left: 5px">已想看</span>

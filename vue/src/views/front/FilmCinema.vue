@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div style="background: linear-gradient(to right, #46187e, #32046b, #32115b); height: 320px">
-      <div style="width: 55%; margin: 0 auto; height: 320px; display: flex; align-items: center">
-        <img :src="data.filmData.img" alt="" style="width: 280px; height: 320px">
+    <div style="background: linear-gradient(to right, #46187e, #32046b, #32115b); height: 380px">
+      <div style="width: 55%; margin: 0 auto; height: 380px; display: flex; align-items: center">
+        <img :src="data.filmData.img" alt="" style="width: auto; height: 380px">
         <div style="flex: 1; color: white; padding: 20px 35px">
           <div style="font-size: 26px">{{ data.filmData.title }}</div>
           <div style="font-size: 16px">{{ data.filmData.english }}</div>

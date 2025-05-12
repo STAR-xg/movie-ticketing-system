@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', redirect: '/manager/home' },
+    { path: '/', redirect: '/manager/adminHome' },
     {
       path: '/manager',
       component: () => import('@/views/Manager.vue'),
@@ -23,7 +23,7 @@ const router = createRouter({
         { path: 'video', meta: { name: '电影预告' }, component: () => import('@/views/manager/Video.vue'), },
         { path: 'certificate', meta: { name: '资质认证' }, component: () => import('@/views/manager/Certificate.vue'), },
         { path: 'room', meta: { name: '影厅房间' }, component: () => import('@/views/manager/Room.vue'), },
-        { path: 'filmShow', meta: { name: '放映记录' }, component: () => import('@/views/manager/FilmShow.vue'), },
+        { path: 'show', meta: { name: '放映记录' }, component: () => import('@/views/manager/FilmShow.vue'), },
         { path: 'orders', meta: { name: '购票订单' }, component: () => import('@/views/manager/Orders.vue'), },
         { path: 'score', meta: { name: '电影评分' }, component: () => import('@/views/manager/Score.vue'), },
       ]

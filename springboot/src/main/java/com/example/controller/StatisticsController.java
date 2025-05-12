@@ -64,7 +64,7 @@ public class StatisticsController {
 
         // 获取最近7天的数据（年-月-日）放在xList里
         Date today = new Date();
-        DateTime start = DateUtil.offsetDay(today, -7);
+        DateTime start = DateUtil.offsetDay(today, -6);
         List<String> xList = DateUtil.rangeToList(start, today, DateField.DAY_OF_YEAR).stream().map(DateUtil::formatDate).toList();
 
         // 获取上述天对应的票房放在yList
